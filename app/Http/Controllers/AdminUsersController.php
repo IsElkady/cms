@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -35,23 +36,45 @@ class AdminUsersController extends Controller
 
         return view("admin.users.create",compact("roles"));
     }
-
+    public function fupload(string $fimage)
+    {
+        if($file=$fimage)
+        {
+            $name=$file->getClientOriginalName();
+            $file->move('images',$name);
+            return $name;
+        }
+        return "";
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
         //
-        //echo $request->input(chkActive);
-        //$ddlrole= $request->get("ddlRoles");
-        //$chkActive=$request->input("chkActive");
-        User::create(["name"=>$request->txtName,"email"=>$request->txtEmail,"password"=>$request->txtPassword,"role_id"=>$request->get("ddlRoles"),"is_active"=>($request->input("chkActive")=="on")?1:0]) ;
+        //$this->validate($request,['txtName'=>"required","txtPassword"=>"required|min:6"]);
+
+        $input=$request->all();
+
+        if($file=$request->file("photo"))
+        {
+
+            $name=$file->getClientOriginalName();
+            $file->move('images',$name);
+            $input["photo"]=$name;
+        }
+
+//echo $input["fimage"];
+        //User::create($request->all());
+        User::create(["name"=>$request->txtName,"email"=>$request->txtEmail,"password"=>$request->txtPassword,"role_id"=>$request->get("ddlRoles"),"is_active"=>($request->input("chkActive")=="on")?1:0,"photo_id"=>$request->file("photo")]) ;
         $roles=Role::all();
-       return view("admin.users.create",compact("roles"));
+      return view("admin.users.create",compact("roles"));
     }
+
+
 
     /**
      * Display the specified resource.

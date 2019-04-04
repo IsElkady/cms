@@ -26,31 +26,31 @@
 
 
 
-        <form method="POST" action="/admin/users">
+        <form method="POST" action="/admin/users" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}"/>
             <table class="table table-hover">
 
                 <tbody>
 
                  <tr>
-                    <td>Name:</td>
+                    <td><label>Name:</label></td>
                     <td><input type="text" name="txtName" ></td>
                  </tr>
                  <tr>
-                    <td>E-mail address:</td>
+                    <td><label>E-mail:</label></td>
                     <td><input type="text" name="txtEmail"></td>
                  </tr>
                  <tr>
-                    <td>Password:</td>
+                    <td><label>Password:</label></td>
                     <td><input type="password" name="txtPassword"></td>
                 </tr>
                 <tr>
-                    <td>Availability:</td>
+                    <td><label>Status:</label></td>
                     <td><input type="checkbox" name="chkActive" ></td>
                 </tr>
                 <tr>
                     <td>
-                        Role:
+                        <label>Role:</label>
                     </td>
                     <td>
                         <select name="ddlRoles">
@@ -60,6 +60,10 @@
                         </select>
                     </td>
                 </tr>
+                 <tr>
+                     <td><label>Image:</label></td>
+                     <td><input type="file" name="photo"></td>
+                 </tr>
                 <tr>
 
                     <td>  <input type="submit" value="Create" class="btn btn-primary"></td>
@@ -68,4 +72,17 @@
               </tbody>
             </table>
         </form>
+
+
+        @if(count($errors)>0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                      <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+
+            </div>
+
+        @endif
     @endsection
