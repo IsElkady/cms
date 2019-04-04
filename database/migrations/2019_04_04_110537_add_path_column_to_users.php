@@ -15,7 +15,7 @@ class AddPathColumnToUsers extends Migration
     {
         Schema::table('Users', function (Blueprint $table) {
             //
-            $table->string("photo_id");
+            $table->integer("photo_id");
         });
     }
 

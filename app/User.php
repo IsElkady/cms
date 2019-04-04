@@ -40,4 +40,8 @@ return $this->belongsTo("App\Role","role_id");
 
 
     }
+    public function photos()
+    {
+        return $this->belongsTo("App\photo");
+    }
 }
