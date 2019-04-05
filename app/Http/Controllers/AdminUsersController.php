@@ -21,8 +21,8 @@ class AdminUsersController extends Controller
 
 
         $users = User::all();           //get all users
-
-        return view("admin.users.index",compact("users")); //Pass all users to views
+        $i=0;
+        return view("admin.users.index",compact("users","i")); //Pass all users to views
        // }
     }
     /**
@@ -37,16 +37,7 @@ class AdminUsersController extends Controller
 
         return view("admin.users.create",compact("roles"));
     }
-    public function fupload(string $fimage)
-    {
-        if($file=$fimage)
-        {
-            $name=$file->getClientOriginalName();
-            $file->move('images',$name);
-            return $name;
-        }
-        return "";
-    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -69,6 +60,9 @@ class AdminUsersController extends Controller
 
             $input["photo"]=$photo->id;
         }
+        else{
+            $input["photo"]=0;
+        }
         //$input["txtPassword"]=bcrypt($input["txtPassword"]);
 //echo $input["fimage"];
         //User::create($request->all());
@@ -77,6 +71,7 @@ class AdminUsersController extends Controller
         //User::create($input);
         User::create(["name"=>$request->txtName,"email"=>$request->txtEmail,"password"=>bcrypt($request->txtPassword),"role_id"=>$request->get("ddlRoles"),"is_active"=>($request->input("chkActive")=="on")?1:0,"photo_id"=>$input["photo"]]) ;
         $roles=Role::all();
+
         return view("admin.users.create",compact("roles"));
     }
 
@@ -102,6 +97,9 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
+        $user=User::find($id);
+        $roles=Role::all();
+        return view("admin.users.edit",compact("roles","user"));
     }
 
     /**
@@ -111,9 +109,33 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateUserRequest $request, $id)
     {
         //
+        $user=User::find($id);
+
+
+        $input=$request->all();
+
+        if($file=$request->file("photo"))
+        {
+
+            $name=time().$file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo=Photo::create(["path"=>$name]);
+
+            $input["photo"]=$photo->id;
+        }
+        else{
+
+            $input["photo"]=$user->photo_id;
+        }
+
+
+        $user->update(["name"=>$request->txtName,"password"=>bcrypt($request->txtPassword),"email"=>$request->txtEmail,"is_active"=>($request->input("chkActive")=="on")?1:0,"role_id"=>$request->get("ddlRoles"),"photo_id"=>$input["photo"]]);
+
+        return redirect ("admin/users");
+
     }
 
     /**
