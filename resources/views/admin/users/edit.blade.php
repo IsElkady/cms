@@ -46,8 +46,8 @@
                         <td>
                             <select name="ddlRoles">
                                 @foreach($roles as $role)
-                                    @if(strtolower($user->roles->name)==strtolower($role->name))
-                                        <option value="{{$user->roles->id}}" selected="selected">{{ucfirst(strtolower($role->name))}}</option>
+                                    @if(strtolower($user->role->name)==strtolower($role->name))
+                                        <option value="{{$user->role->id}}" selected="selected">{{ucfirst(strtolower($role->name))}}</option>
                                     @else
                                         <option value="{{$role->id}}" >{{ucfirst(strtolower($role->name))}}</option>
                                     @endif

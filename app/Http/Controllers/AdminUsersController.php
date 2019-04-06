@@ -7,6 +7,7 @@ use App\Role;
 use App\User;
 use App\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUsersController extends Controller
 {
@@ -18,9 +19,11 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-
+        $loggeduser=Auth::user();
+        session(["loggeduser"=>$loggeduser->name]);
 
         $users = User::all();           //get all users
+
         $i=0;
         return view("admin.users.index",compact("users","i")); //Pass all users to views
        // }
@@ -97,6 +100,7 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
+        $loggeduser=Auth::user();
         $user=User::find($id);
         $roles=Role::all();
         return view("admin.users.edit",compact("roles","user"));
@@ -147,5 +151,14 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        $user=User::find($id);
+        if($user->photo)
+        {
+            unlink(public_path().'\images\\ '.$user->photo->path);
+        }
+
+        $user->delete();
+        Session("user_deleted","User has been deleted");
+        return redirect("admin/users");
     }
 }

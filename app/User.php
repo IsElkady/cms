@@ -30,18 +30,24 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|string
      */
-    public  function roles()
+    public  function role()
     {
-return $this->belongsTo("App\Role","role_id");
-        //return "welcome";
-
-       // return $this->belongsTo("App\Role");
-
-
-
+        return $this->belongsTo("App\Role","role_id");
     }
+
     public function photo()
     {
         return $this->belongsTo("App\photo");
+    }
+
+
+    public function isAdmin()
+    {
+
+        if(strtolower($this->role->name)=="administrator" && $this->is_active==1)
+        {
+            return true;
+        }
+        return false;
     }
 }
