@@ -46,14 +46,14 @@
                 </tr>
                 <tr>
                     <td><label>Status:</label></td>
-                    <td><input type="checkbox" name="chkActive" ></td>
+                    <td><input type="checkbox" name="chkActive"></td>
                 </tr>
                 <tr>
                     <td>
                         <label>Role:</label>
                     </td>
                     <td>
-                        <select name="ddlRoles">
+                        <select name="ddlRoles" class="form-control">
                             @foreach($roles as $role)
                                 <option value="{{$role->id}}">{{ucfirst(strtolower($role->name))}}</option>
                             @endforeach

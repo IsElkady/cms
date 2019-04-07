@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\AdminPostsRequest;
 use Illuminate\Http\Request;
 use App\User;
@@ -42,7 +43,8 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        return view("admin.posts.create");
+        $categories=Category::all();
+        return view("admin.posts.create",compact("categories"));
     }
 
     /**
