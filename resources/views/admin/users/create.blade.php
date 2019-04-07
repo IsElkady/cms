@@ -34,15 +34,15 @@
 
                  <tr>
                     <td><label>Name:</label></td>
-                    <td><input type="text" name="txtName" ></td>
+                    <td><input type="text" name="txtName" class="form-control"></td>
                  </tr>
                  <tr>
                     <td><label>E-mail:</label></td>
-                    <td><input type="text" name="txtEmail"></td>
+                    <td><input type="text" name="txtEmail" class="form-control"></td>
                  </tr>
                  <tr>
                     <td><label>Password:</label></td>
-                    <td><input type="password" name="txtPassword"></td>
+                    <td><input type="password" name="txtPassword" class="form-control"></td>
                 </tr>
                 <tr>
                     <td><label>Status:</label></td>
@@ -62,7 +62,7 @@
                 </tr>
                  <tr>
                      <td><label>Image:</label></td>
-                     <td><input type="file" name="photo"></td>
+                     <td><input type="file" name="photo" class="form-control"></td>
                  </tr>
                 <tr>
 

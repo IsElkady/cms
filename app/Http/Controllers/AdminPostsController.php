@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminPostsRequest;
 use Illuminate\Http\Request;
+use App\User;
+use App\Post;
+use App\Photo;
+use Illuminate\Support\Facades\Auth;
 
-class PostsController extends Controller
+class AdminPostsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,6 +19,19 @@ class PostsController extends Controller
     public function index()
     {
         //
+        $posts=Post::all();
+
+     //   $users=User::all();
+//return $users->post();
+//foreach($users as $user)
+//{
+//    foreach( $user->post as $post)
+//    {
+//        echo $post->title;
+//        echo $post->body;
+//    }
+//}
+         return view("admin.posts.index",compact("posts","photos"));
     }
 
     /**
@@ -24,6 +42,7 @@ class PostsController extends Controller
     public function create()
     {
         //
+        return view("admin.posts.create");
     }
 
     /**
@@ -32,9 +51,30 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminPostsRequest $request)
     {
         //
+        $input=$request->all();
+        $user=Auth::user();
+
+       // print_r($user);
+      //  echo ($user->id);
+//        foreach ($user as $authuser)
+//        {
+//            echo $authuser->id;
+//
+//        }
+        if($file=$request->file("flPhoto"))
+        {
+             $name= time().$file->getClientOriginalName();
+             $file->move("images",$name);
+             $photo=Photo::create(["path"=>$name]);
+
+             $input["flPhoto"]=$photo->id;
+        }
+
+        Post::create(["user_id"=>$user->id,"title"=>$request->txtTitle,"body"=>$request->txtBody,"photo_id"=>$input["flPhoto"],"category_id"=>1,"body"=>$request->txtBody]);
+
     }
 
     /**
